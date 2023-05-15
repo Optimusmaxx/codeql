@@ -117,7 +117,7 @@ void replaceMergedModulesImplementation(const SwiftExtractorState& state,
            getTrapPath(state, mergedPartTarget, TrapType::linkage),
            fs::copy_options::overwrite_existing, ec);
   CODEQL_ASSERT(!ec, "Unable to replace trap implementation id for merged module '{}' ({})", name,
-                ec);
+                ec.message());
 }
 
 void emitModuleObjectDependencies(const SwiftExtractorState& state,

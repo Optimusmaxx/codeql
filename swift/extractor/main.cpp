@@ -170,7 +170,7 @@ codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
   auto filename = absl::StrCat(timestamp, "-", getpid());
   auto target = std::filesystem::path("invocations") / std::filesystem::path(filename);
   auto maybeDomain = codeql::createTargetTrapDomain(state, target, codeql::TrapType::invocation);
-  CODEQL_ASSERT(maybeDomain, "Cannot create invocation trap file for {}", target);
+  CODEQL_ASSERT(maybeDomain, "Cannot create invocation trap file for {}", target.native());
   return std::move(maybeDomain.value());
 }
 

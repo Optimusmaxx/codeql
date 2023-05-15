@@ -24,7 +24,7 @@ void ensureParentDir(const fs::path& path) {
   auto parent = path.parent_path();
   std::error_code ec;
   fs::create_directories(parent, ec);
-  CODEQL_ASSERT(!ec, "Unable to create directory {} ({})", parent, ec);
+  CODEQL_ASSERT(!ec, "Unable to create directory {} ({})", parent.native(), ec.message());
 }
 
 fs::path initPath(const std::filesystem::path& target, const std::filesystem::path& dir) {
@@ -50,8 +50,8 @@ bool TargetFile::init() {
     checkOutput("open");
     return true;
   }
-  CODEQL_ASSERT(errno == EEXIST, "Unable to open {} for writing ({})", targetPath,
-                currentErrorCode());
+  CODEQL_ASSERT(errno == EEXIST, "Unable to open {} for writing ({})", targetPath.native(),
+                currentErrorCode().message());
   // else the file already exists and we just lost the race
   return false;
 }
@@ -69,11 +69,13 @@ void TargetFile::commit() {
     out.close();
     std::error_code ec;
     fs::rename(workingPath, targetPath, ec);
-    CODEQL_ASSERT(!ec, "Unable to rename {} -> {} ({})", workingPath, targetPath, ec);
+    CODEQL_ASSERT(!ec, "Unable to rename {} -> {} ({})", workingPath.native(), targetPath.native(),
+                  ec.message());
   }
 }
 
 void TargetFile::checkOutput(const char* action) {
-  CODEQL_ASSERT(out, "Unable to {} {} ({})", action, workingPath, currentErrorCode());
+  CODEQL_ASSERT(out, "Unable to {} {} ({})", action, workingPath.native(),
+                currentErrorCode().message());
 }
 }  // namespace codeql

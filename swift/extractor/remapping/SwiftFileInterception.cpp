@@ -128,7 +128,7 @@ class FileInterceptor {
 
   fs::path redirect(const fs::path& target) const {
     CODEQL_ASSERT(mayBeRedirected(target.c_str()), "Trying to redirect {} which is unsupported",
-                  target);
+                  target.native());
     auto redirected = redirectedPath(target);
     fs::create_directories(redirected.parent_path());
     if (auto hashed = hashPath(target)) {

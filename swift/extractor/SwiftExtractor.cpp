@@ -31,7 +31,7 @@ using namespace main_logger;
 static void ensureDirectory(const char* label, const fs::path& dir) {
   std::error_code ec;
   fs::create_directories(dir, ec);
-  CODEQL_ASSERT(!ec, "Cannot create {} directory ({})", label, ec);
+  CODEQL_ASSERT(!ec, "Cannot create {} directory ({})", label, ec.message());
 }
 
 static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
